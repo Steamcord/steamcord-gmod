@@ -1,6 +1,7 @@
 Steamcord = {}
 Steamcord.Config = {}
-
+Steamcord.Utils = {}
+Steamcord.Objects = {}
 local function loadDirectory(dir)
     local fil, fol = file.Find(dir .. "/*", "LUA")
     for k,v in ipairs(fol) do
@@ -14,6 +15,7 @@ end
 
 hook.Add("Think", "load_steamcord_gmod", function()
     hook.Remove("Think", "load_steamcord_gmod")
+    loadDirectory("steamcord/utils")
     loadDirectory("steamcord/config")
     include("steamcord/data/sv_common.lua")
     include("steamcord/data/sv_mysqloo.lua")
