@@ -4,6 +4,7 @@ SteamcordReward.__index = SteamcordReward
 Steamcord.Utils.BuilderAccessor(SteamcordReward, "Name", "name")
 Steamcord.Utils.BuilderAccessor(SteamcordReward, "RewardFunc", "rewardFunc")
 Steamcord.Utils.BuilderAccessor(SteamcordReward, "IsRunOnce", "runOnce")
+Steamcord.Utils.BuilderAccessor(SteamcordReward, "IsRunOnJoin", "runOnJoin")
 
 function SteamcordReward.New()
     local obj = setmetatable({}, SteamcordReward)
@@ -17,6 +18,7 @@ function SteamcordReward.FromConfigObj(name, rawObj)
         :SetRequirements(rawObj.requirements)
         :SetIsRunOnce(rawObj.runOnce)
         :SetRewardFunc(rawObj.onGiven)
+        :SetIsRunOnJoin(rawObj.runOnJoin)
 end
 
 
@@ -62,7 +64,7 @@ do
 
         rewardFunc(ply)
 
-        if self:GetIsRunOnce() then
+        if not self:GetIsRunOnJoin() and self:GetIsRunOnce() then
             Steamcord.Data.SetRedeemed(ply:SteamID64(), self:GetName(), function()
                 print("Steamcord Rewarded: ", ply:SteamID64(), self:GetName())
             end)
