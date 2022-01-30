@@ -30,12 +30,12 @@ do
             url = targetUri,
             method = "POST",
             headers = buildPostHeaders(),
+            type = "application/json; charset=utf-8",
             body = util.TableToJSON(assembleSteamIds()),
             success = function(code, data, headers)
-                print(data)
             end,
             failed = function(err)
-                print(err)
+                print("Steamcord failed to push steamids onto the queue", err)
             end
         })
     end
@@ -74,7 +74,9 @@ do
     end
 end
 
+
 -- TODO: fix 415.
+
 Steamcord.RestAPI.POSTSteamGroupQueue()
 timer.Create("Steamcord.UpdateSteamGroups", 5 * 60, 0, function()
     if not Steamcord.Config.UpdateSteamGroups then return end
