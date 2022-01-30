@@ -14,31 +14,32 @@ do
     local function buildPostHeaders()
         local headers = buildBaseHeaders()
         headers["Content-Type"] = "application/json"
+        headers["Accept"] = "*/*"
         return headers
     end
 
     local function assembleSteamIds()
         local steamIds = {}
-        for k,v in pairs(player.GetAll()) do
-            steamIds[#steamIds + 1] = v:SteamID64()
+        for _,ply in pairs(player.GetAll()) do
+            steamIds[#steamIds + 1] = ply:SteamID64()
         end
         return steamIds
     end
 
     local targetUri = buildEndpointURI("/steam-groups/queue")
     function Steamcord.RestAPI.POSTSteamGroupQueue()
-        HTTP(
+        HTTP({
             url = targetUri,
             method = "POST",
             headers = buildPostHeaders(),
-            body = util.JSONToTable(assembleSteamIds()),
+            body = util.TableToJSON(assembleSteamIds()),
             success = function(code, data, headers)
                 print(data)
             end,
             failed = function(err)
                 print(err)
             end
-        )
+        })
     end
 end
 
@@ -75,8 +76,10 @@ do
     end
 end
 
-
+-- timer.Create
+Steamcord.RestAPI.POSTSteamGroupQueue()
 timer.Create("Steamcord.UpdateSteamGroups", 5 * 60, 0, function()
+    print("ran?'")
     if not Steamcord.Config.UpdateSteamGroups then return end
     Steamcord.RestAPI.POSTSteamGroupQueue()
 end)
