@@ -75,12 +75,8 @@ do
 end
 
 
--- TODO: fix 415.
-
 Steamcord.RestAPI.POSTSteamGroupQueue()
 timer.Create("Steamcord.UpdateSteamGroups", 5 * 60, 0, function()
     if not Steamcord.Config.UpdateSteamGroups then return end
     Steamcord.RestAPI.POSTSteamGroupQueue()
 end)
-
--- Steamcord.RestAPI.GETPlayer("76561198171821322")
