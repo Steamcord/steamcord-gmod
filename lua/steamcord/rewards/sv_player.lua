@@ -36,7 +36,7 @@ do
                 local cooldownKey = tostring(sender)
                 local curTime = CurTime()
                 if cooldowns[cooldownKey] and cooldowns[cooldownKey] > curTime then
-                    sender:ChatPrint("You're on cooldown for: " .. tostring(cooldowns[cooldownKey] - curTime) .. " seconds.")
+                    sender:ChatPrint("You're on cooldown for: " .. tostring( math.floor(cooldowns[cooldownKey] - curTime)) .. " seconds.")
                     return ""
                 end
                 Steamcord.Rewards.CheckRewardsForPlayers(sender)
