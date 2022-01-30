@@ -2,6 +2,8 @@ Steamcord = {}
 Steamcord.Config = {}
 Steamcord.Utils = {}
 Steamcord.Objects = {}
+Steamcord.Rewards = {}
+Steamcord.RestAPI = {}
 local function loadDirectory(dir)
     local fil, fol = file.Find(dir .. "/*", "LUA")
     for k,v in ipairs(fol) do
@@ -22,4 +24,5 @@ hook.Add("Think", "load_steamcord_gmod", function()
     include("steamcord/data/sv_sqlite.lua")
     loadDirectory("steamcord/objects")
     loadDirectory("steamcord/restapi")
+    loadDirectory("steamcord/rewards")
 end)
