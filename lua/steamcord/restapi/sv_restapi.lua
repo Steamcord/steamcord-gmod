@@ -1,4 +1,3 @@
-Steamcord.RestAPI = {}
 
 local function buildEndpointURI(endpoint)
     return Steamcord.Config.Api.BaseUri .. endpoint
@@ -14,7 +13,6 @@ do
     local function buildPostHeaders()
         local headers = buildBaseHeaders()
         headers["Content-Type"] = "application/json"
-        headers["Accept"] = "*/*"
         return headers
     end
 
@@ -67,7 +65,7 @@ do
                 error("unable to interract with the Steamcord API request status code: " .. code)
             end
 
-            callback(createPlayerObjects(body))
+            callback(createPlayerObjects(body)[1])
         end, 
         function(err) 
             print(err) 
@@ -76,10 +74,9 @@ do
     end
 end
 
--- timer.Create
+-- TODO: fix 415.
 Steamcord.RestAPI.POSTSteamGroupQueue()
 timer.Create("Steamcord.UpdateSteamGroups", 5 * 60, 0, function()
-    print("ran?'")
     if not Steamcord.Config.UpdateSteamGroups then return end
     Steamcord.RestAPI.POSTSteamGroupQueue()
 end)
