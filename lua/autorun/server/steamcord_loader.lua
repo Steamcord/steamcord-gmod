@@ -1,3 +1,4 @@
+// Copyright 2022 Steamcord LLC
 Steamcord = {}
 Steamcord.Config = {}
 Steamcord.Utils = {}

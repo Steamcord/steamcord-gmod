@@ -1,3 +1,4 @@
+// Copyright 2022 Steamcord LLC
 local RegisteredRewards = {}
 
 for rewardName,configObj in pairs(Steamcord.Config.Rewards) do

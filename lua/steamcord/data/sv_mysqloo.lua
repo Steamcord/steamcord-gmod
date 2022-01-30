@@ -1,3 +1,4 @@
+// Copyright 2022 Steamcord LLC
 if not mysqloo then
     require("mysqloo")
 end

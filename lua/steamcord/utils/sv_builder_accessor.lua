@@ -1,3 +1,4 @@
+// Copyright 2022 Steamcord LLC
 function Steamcord.Utils.BuilderAccessor(tbl, humanName, internalVar)
     tbl[ "Set" .. humanName] = function(self,  val)
         self[internalVar] = val

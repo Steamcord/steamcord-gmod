@@ -1,3 +1,4 @@
+// Copyright 2022 Steamcord LLC
 local SteamcordPlayer = {}
 
 SteamcordPlayer.__index = SteamcordPlayer

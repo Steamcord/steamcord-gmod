@@ -1,4 +1,4 @@
-
+// Copyright 2022 Steamcord LLC
 local redeemedRewards = {}
 
 function Steamcord.Rewards.CheckRewardsForPlayers(player, callback)
@@ -11,7 +11,7 @@ function Steamcord.Rewards.CheckRewardsForPlayers(player, callback)
         
         for _,reward in ipairs(rewards) do
             if redeemedRewards[steamId][reward:GetName()] then continue end
-            
+
             if reward:GetIsRunOnce() then
                 Steamcord.Data.HasRedeemed(steamId, reward:GetName(), function(steamId, rewardType, hasRedeemed)
                     if not hasRedeemed then

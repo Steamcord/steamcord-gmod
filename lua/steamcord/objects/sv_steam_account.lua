@@ -1,3 +1,4 @@
+// Copyright 2022 Steamcord LLC
 local SteamcordSteamAccount = {}
 
 SteamcordSteamAccount.__index = SteamcordSteamAccount
