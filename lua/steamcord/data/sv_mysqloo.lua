@@ -72,9 +72,8 @@ function Steamcord.MySQL:HasRedeemed(steamID, rewardName, callback)
     self:Query("SELECT SteamID, HasBeenRewarded FROM Redemption WHERE SteamID = ? AND RewardName = ? AND HasBeenRewarded = 1 ", function(data)
         local hasBeenRewarded = #data > 0 and data[1].HasBeenRewarded == 1
     
-        callback(steamID, hasBeenRewarded)
+        callback(steamID, rewardName, hasBeenRewarded)
     end, function(err)
-        print("Got error:", err)  
     end, steamID, rewardName)
     
 end
