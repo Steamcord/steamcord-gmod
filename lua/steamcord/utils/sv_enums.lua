@@ -1,4 +1,5 @@
-// Copyright 2022 Steamcord LLC
+-- Copyright 2022 Steamcord LLC
+
 Steamcord.RestAPI.Enums = {
     Requirements = {
         MemberOfSteamGroup = "SteamGroupMember",

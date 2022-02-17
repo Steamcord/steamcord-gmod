@@ -1,4 +1,5 @@
-// Copyright 2022 Steamcord LLC
+-- Copyright 2022 Steamcord LLC
+
 Steamcord.Rewards.Funcs = {}
 
 function Steamcord.Rewards.Funcs.GiveWeapon(player, weapon)
