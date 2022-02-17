@@ -5,8 +5,16 @@ Steamcord.Config = {
     },
     ChatCommands = {
         "/claim",
-        "/link",
-        "/auth"
+    },
+    Data = {
+        DatabaseType = "MySQL",
+        ConnectionInfo = {
+            Host = "127.0.0.1",
+            Port = 3306,
+            Username = "root",
+            Password = "password",
+            Database = "rewards"
+        }
     },
     ProvisionRwardsOnJoin = true,
     Rewards = {
@@ -40,20 +48,6 @@ Steamcord.Config = {
             runOnJoin = false,
             -- Given once?
             runOnce = true
-        }
-    },
-    Data = {
-        -- This can either be MySQL or SQLite.
-        -- If you have a MYSQL database and wish to store the redemption data on there,
-        -- do so with MySQL.
-        DatabaseType = "Mysql",
-        -- You DO NOT NEED TO FILL THIS OUT IF YOU HAVE SELECTED SQLITE
-        ConnectionInfo = {
-            Host = "127.0.0.1",
-            Port = 3306,
-            Username = "root",
-            Password = "password",
-            Database = "rewards"
         }
     },
     UpdateSteamGroups = true
