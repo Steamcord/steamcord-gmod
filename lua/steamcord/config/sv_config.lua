@@ -16,7 +16,6 @@ Steamcord.Config = {
             Database = "rewards"
         }
     },
-    ProvisionRwardsOnJoin = true,
     Rewards = {
         ["DiscordAccount"] = {
             onGiven = function(ply)
