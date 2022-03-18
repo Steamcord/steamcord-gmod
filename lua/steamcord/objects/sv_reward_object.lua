@@ -17,10 +17,10 @@ end
 function SteamcordReward.FromConfigObj(name, rawObj)
     return SteamcordReward.New()
         :SetName(name)
-        :SetRequirements(rawObj.requirements)
-        :SetIsRunOnce(rawObj.runOnce)
-        :SetRewardFunc(rawObj.onGiven)
-        :SetIsRunOnJoin(rawObj.runOnJoin)
+        :SetRequirements(rawObj.Requirements)
+        :SetIsRunOnce(rawObj.ProvisionOnce)
+        :SetRewardFunc(rawObj.OnGiven)
+        :SetIsRunOnJoin(rawObj.ProvisionOnJoin)
 end
 
 
