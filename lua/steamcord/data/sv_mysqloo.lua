@@ -1,7 +1,9 @@
 -- Copyright 2022 Steamcord LLC
 
 if not mysqloo then
-    require("mysqloo")
+    local err, eName = pcall(function()
+        require("mysqloo")
+    end)
 end
 
 Steamcord.MySQL = {}
@@ -38,18 +40,17 @@ function Steamcord.MySQL:TableCheck()
     self:Query([[
         CREATE TABLE IF NOT EXISTS Redemption(
             Id BIGINT AUTO_INCREMENT NOT NULL,
-            SteamID VARCHAR(17) NOT NULL,
+            SteamId VARCHAR(17) NOT NULL,
             RewardName VARCHAR(64),
-            HasBeenRewarded BIT(1),
             PRIMARY KEY(Id),
-            UNIQUE KEY SteamIDRewardName (RewardName, SteamID)
+            UNIQUE KEY SteamIdRewardName (RewardName, SteamId)
         );
     ]], function()
     end)
 end
 
 function Steamcord.MySQL:SetRedeemed(steamID, rewardType, hasBeenRewarded, callback)
-    hasBeenRewarded = hasBeenRewarded or true
+    hasBeenRewarded = hasBeenRewarded == nil and true or hasBeenRewarded
     
     if not tonumber(steamID) then
         error("The steamid provided is not a steamid64")
@@ -63,16 +64,24 @@ function Steamcord.MySQL:SetRedeemed(steamID, rewardType, hasBeenRewarded, callb
         error("hasBeenRewarded is not a boolean")
     end
     
-    self:Query("INSERT INTO Redemption(SteamID, RewardName, HasBeenRewarded) VALUES(?,?,?)", function()
-        callback(steamID, rewardType, hasBeenRewarded)
-    end, nil, steamID, rewardType, hasBeenRewarded and 1 or 0)
+    if not hasBeenRewarded then
+        self:Query("DELETE FROM Redemption WHERE SteamId = ? AND RewardName = ?", function()
+            callback(steamID, rewardType, hasBeenRewarded)
+        end, nil, steamID, rewardType)
+    else
+        self:Query("INSERT INTO Redemption(SteamId, RewardName) VALUES(?,?)", function()
+            callback(steamID, rewardType, hasBeenRewarded)
+        end, nil, steamID, rewardType)
+    end
 
 end
 
+
+
 function Steamcord.MySQL:HasRedeemed(steamID, rewardName, callback)
 
-    self:Query("SELECT SteamID, HasBeenRewarded FROM Redemption WHERE SteamID = ? AND RewardName = ? AND HasBeenRewarded = 1 ", function(data)
-        local hasBeenRewarded = #data > 0 and data[1].HasBeenRewarded == 1
+    self:Query("SELECT SteamId FROM Redemption WHERE SteamId = ? AND RewardName = ?;", function(data)
+        local hasBeenRewarded = #data > 0
     
         callback(steamID, rewardName, hasBeenRewarded)
     end, function(err)
@@ -91,21 +100,21 @@ function Steamcord.MySQL:ResetRewardName(rewardName, callback)
 end
 
 
-function Steamcord.MySQL:ResetSteamID(steamID, callback)
+function Steamcord.MySQL:ResetSteamID(steamId, callback)
 
-    self:Query("DELETE FROM Redemption WHERE SteamID = ?", function(data)
-        callback(steamID)
+    self:Query("DELETE FROM Redemption WHERE SteamId = ?", function(data)
+        callback(steamId)
     end, function(err)
-    end, steamID)
+    end, steamId)
     
 end
 
 function Steamcord.MySQL:ResetSteamIDWithRewardName(steamID, rewardName, callback)
 
-    self:Query("DELETE FROM Redemption WHERE SteamID = ? AND RewardName = ?", function(data)
-        callback(steamID, rewardName)
+    self:Query("DELETE FROM Redemption WHERE SteamId = ? AND RewardName = ?", function(data)
+        callback(steamId, rewardName)
     end, function(err)
-    end, steamID, rewardName)
+    end, steamId, rewardName)
     
 end
 
@@ -129,7 +138,7 @@ do
             connectionInfo.Port)
         
         self.instance.onConnected = function()
-            Steamcord.MySQL:TableCheck()
+            self:TableCheck()
         end
 
         self.instance.onConnectionFailed = function(_,err)
