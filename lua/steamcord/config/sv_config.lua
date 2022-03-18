@@ -7,7 +7,7 @@ Steamcord.Config = {
         "/claim",
     },
     Data = {
-        DatabaseType = "MySQL",
+        DatabaseType = "mysql",
         ConnectionInfo = {
             Host = "127.0.0.1",
             Port = 3306,
@@ -18,35 +18,35 @@ Steamcord.Config = {
     },
     Rewards = {
         ["DiscordAccount"] = {
-            onGiven = function(ply)
+            OnGiven = function(ply)
                 AddMoney(ply, 1000)
                 AddPS2PremiumPoints(ply, 15000)
                 AddPS2NormalPoints(ply, 15000)
                 GiveWeapon(ply, "weapon_357")
             end,
-            requirements = {
-                Steamcord.RestAPI.Enums.MemberOfSteamGroup
+            Requirements = {
+                Steamcord.RestAPI.Enums.SteamGroupMember
             },
             -- Should it be ran when the player joins the server?
             -- If this is true, run once should be false, as this will
             -- take precedence.
-            runOnJoin = false,
+            ProvisionOnJoin = false,
             -- Added to the selected database, and never given again until wiped.
-            runOnce = false
+            ProvisionOnce = false
         },
         ["SteamAccount"] = {
-            onGiven = function(ply)
+            OnGiven = function(ply)
 
             end,
-            requirements = {
-                Steamcord.RestAPI.Enums.MemberOfSteamGroup
+            Requirements = {
+                Steamcord.RestAPI.Enums.SteamGroupMember
             },
             -- Should it be ran when the player joins the server?
             -- If this is selected, run once should be false, as this will
             -- take precedence.
-            runOnJoin = false,
+            ProvisionOnJoin = false,
             -- Given once?
-            runOnce = true
+            ProvisionOnce = true
         }
     },
     UpdateSteamGroups = true
