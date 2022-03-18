@@ -35,5 +35,3 @@ function Steamcord.Rewards.Funcs.SetUserGroup(player, usergroup)
     assert(isstring(usergroup), "The usergroup is not a string.")   
     player:SetUserGroup(usergroup)
 end
-
-print(weapons.GetStored("weapon_357") ~= nil)
