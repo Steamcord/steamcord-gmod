@@ -2,9 +2,9 @@
 
 Steamcord.RestAPI.Enums = {
     Requirements = {
-        MemberOfSteamGroup = "SteamGroupMember",
-        NitroBooster = "DiscordGuildBooster",
-        MemberOfDiscordGuild = "DiscordGuildMember",
+        SteamGroupMember = "SteamGroupMember",
+        DiscordGuildBooster = "DiscordGuildBooster",
+        DiscordGuildMember = "DiscordGuildMember",
         Discord = "Discord",
         Steam = "Steam"
     }
