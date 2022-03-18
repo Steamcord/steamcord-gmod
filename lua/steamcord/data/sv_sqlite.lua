@@ -1,9 +1,5 @@
 -- Copyright 2022 Steamcord LLC
 
-if not mysqloo then
-    require("mysqloo")
-end
-
 Steamcord.SQLite = {}
 
 function Steamcord.SQLite.TableCheck()
@@ -11,18 +7,17 @@ function Steamcord.SQLite.TableCheck()
     local data = sql.Query([[
         CREATE TABLE Redemption(
             Id INTEGER PRIMARY KEY AUTOINCREMENT,
-            SteamID VARCHAR(17) NOT NULL,
+            SteamId VARCHAR(17) NOT NULL,
             RewardName VARCHAR(64),
-            HasBeenRewarded BIT(1),
-            UNIQUE(`RewardName`, `SteamID`)
+            UNIQUE(`RewardName`, `SteamId`)
         );
     ]])
 end
-
-function Steamcord.SQLite:SetRedeemed(steamID, rewardName, hasBeenRewarded, callback)
-    hasBeenRewarded = hasBeenRewarded or true
+Steamcord.SQLite.TableCheck()
+function Steamcord.SQLite:SetRedeemed(steamId, rewardName, hasBeenRewarded, callback)
+    hasBeenRewarded = hasBeenRewarded == nil and true or hasBeenRewarded
     
-    if not tonumber(steamID) then
+    if not tonumber(steamId) then
         error("The steamid provided is not a steamid64")
     end
 
@@ -34,30 +29,34 @@ function Steamcord.SQLite:SetRedeemed(steamID, rewardName, hasBeenRewarded, call
         error("hasBeenRewarded is not a boolean")
     end
 
-    local data = sql.Query("INSERT INTO Redemption(SteamID, RewardName, HasBeenRewarded) VALUES(" .. sql.SQLStr(steamID) .. "," .. sql.SQLStr(rewardName) .. "," .. (hasBeenRewarded and 1 or 0) .. ");")
-    callback(steamID, rewardType, hasBeenRewarded)
+    if hasBeenRewarded == false then
+        sql.Query("DELETE FROM Redemption WHERE SteamId = ".. sql.SQLStr(steamId) .. " AND RewardName = " .. sql.SQLStr(rewardName))
+    else
+        sql.Query("INSERT INTO Redemption(SteamId, RewardName) VALUES(" .. sql.SQLStr(steamId) .. "," .. sql.SQLStr(rewardName) .. ")")
+    end
+
+    callback(steamId, rewardType, hasBeenRewarded)
 end
 
-function Steamcord.SQLite:HasRedeemed(steamID, rewardName, callback)
-    local data = sql.Query("SELECT SteamID, HasBeenRewarded FROM Redemption WHERE SteamID = " .. sql.SQLStr(steamID) .. " AND RewardName = " .. sql.SQLStr(rewardName) .. " AND HasBeenRewarded = 1")
-    local hasBeenRewarded = data and tonumber(data[1].HasBeenRewarded or 0) == 1 or false
-    callback(steamID, rewardName, hasBeenRewarded)
+function Steamcord.SQLite:HasRedeemed(steamId, rewardName, callback)
+    local data = sql.Query("SELECT SteamId FROM Redemption WHERE SteamId = " .. sql.SQLStr(steamId) .. " AND RewardName = " .. sql.SQLStr(rewardName))
+    local hasBeenRewarded = table.Count(data or {}) > 0
+    callback(steamId, rewardName, hasBeenRewarded)
 end
-
 
 function Steamcord.SQLite:ResetRewardName(rewardName, callback)
     sql.Query("DELETE FROM Redemption WHERE RewardName = " .. sql.SQLStr(rewardName))
     callback(rewardName) 
 end
 
-function Steamcord.SQLite:ResetSteamID(steamID, callback)
-    sql.Query("DELETE FROM Redemption WHERE SteamID = " .. sql.SQLStr(steamID))
-    callback(steamID)
+function Steamcord.SQLite:ResetSteamID(steamId, callback)
+    sql.Query("DELETE FROM Redemption WHERE SteamId = " .. sql.SQLStr(steamId))
+    callback(steamId)
 end
 
-function Steamcord.SQLite:ResetSteamIDWithRewardName(steamID, rewardName, callback)
-    sql.Query("DELETE FROM Redemption WHERE SteamID = " .. sql.SQLStr(steamID) .. " AND RewardName = " .. SQLStr(rewardName))
-    callback(steamID, rewardName)
+function Steamcord.SQLite:ResetSteamIDWithRewardName(steamId, rewardName, callback)
+    sql.Query("DELETE FROM Redemption WHERE SteamId = " .. sql.SQLStr(steamId) .. " AND RewardName = " .. SQLStr(rewardName))
+    callback(steamId, rewardName)
 end
 
 function Steamcord.SQLite:ResetAll(callback)
