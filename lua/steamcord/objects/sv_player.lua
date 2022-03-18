@@ -55,17 +55,17 @@ function SteamcordPlayer:GetAchievedRequirements()
     for _,steamAccountObj in ipairs(self.steamAccounts) do
         
         if steamAccountObj:GetIsSteamGroupMember() then
-            hitRequirements[Steamcord.RestAPI.Enums.Requirements.MemberOfSteamGroup] = true
+            hitRequirements[Steamcord.RestAPI.Enums.Requirements.SteamGroupMember] = true
         end
     end
 
     for _,discordAccountObj in pairs(self.discordAccounts) do
         if discordAccountObj:GetIsGuildMember() then
-            hitRequirements[Steamcord.RestAPI.Enums.Requirements.MemberOfDiscordGuild] = true
+            hitRequirements[Steamcord.RestAPI.Enums.Requirements.DiscordGuildMember] = true
         end
 
         if discordAccountObj:GetIsGuildBooster() then
-            hitRequirements[Steamcord.RestAPI.Enums.Requirements.NitroBooster] = true
+            hitRequirements[Steamcord.RestAPI.Enums.Requirements.DiscordGuildBooster] = true
         end
     end
 
